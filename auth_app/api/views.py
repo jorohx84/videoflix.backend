@@ -23,7 +23,7 @@ class RegisterView(APIView):
         refresh = RefreshToken.for_user(user)
 
         
-        enqueue(send_activation_email, user.email, str(refresh.access_token))
+        enqueue(send_activation_email, user, str(refresh.access_token))
       
         response = Response({
             "user": {
