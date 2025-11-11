@@ -29,18 +29,21 @@ def send_activation_email(user):
     text_content = f'Please activate your account using this token: {token}'
     html_content = f"""
     <html>
-      <body>
+    <body style="font-family: 'Helvetica', Arial, sans-serif; color: #333; line-height: 1.6;">
+        <img src="https://127.0.0.1:5500/assets/icons/logo_icon.svg" alt="Videoflix Logo" style="width:200px; margin-bottom:20px;" />
         <h2>Dear {user.email},</h2>
-        <p>Thank you for registering with Videoflix. to complete your registration and verify your email adress, please click the link below:</p>
-       
+        <p>Thank you for registering with Videoflix. To complete your registration and verify your email address, please click the link below:</p>
+    
         <a href="{activation_link}" 
-           style="background-color: #1E90FF; color: white; padding: 10px 20px; 
-                  text-decoration: none; border-radius: 5px;">
-           Activate Account
+        style="background-color: #1E90FF; color: white; padding: 10px 20px; 
+                text-decoration: none; border-radius: 100px; margin-top: 32px; margin-bottom: 32px">
+        Activate Account
         </a>
 
-        <p>If your did not create an account with us, please disregard this email</p> 
-      </body>
+        <p>If you did not create an account with us, please disregard this email</p> 
+        <p>Best regards,</p>
+        <p>Your Videoflix Team</p>
+    </body>
     </html>
     """
 
