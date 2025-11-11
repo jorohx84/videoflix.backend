@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import EmailMultiAlternatives
+from django.urls import reverse
 # def send_activation_email(user_email, activation_token):
 #     subject = 'Confirm your email'
 #     message = f'Please activate your account using this token: {activation_token}'
@@ -17,26 +18,28 @@ from django.core.mail import EmailMultiAlternatives
 #         fail_silently=False,
 #     )
 
-def send_activation_email(user, activation_token):
+def send_activation_email(user):
     print(user)
     subject = 'Confirm your email'
     from_email = settings.DEFAULT_FROM_EMAIL
     to = [user.email]
-   
-    text_content = f'Please activate your account using this token: {activation_token}'
+    uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+    activation_link = f"http://localhost:8000{reverse('activate', kwargs={'uidb64': uidb64, 'token': token})}"
+    text_content = f'Please activate your account using this token: {token}'
     html_content = f"""
     <html>
       <body>
         <h2>Dear {user.email},</h2>
         <p>Thank you for registering with Videoflix. to complete your registration and verify your email adress, please click the link below:</p>
        
-        <button>Activate account</button>
-    
-        <a href="https://example.com/activate/{activation_token}" 
+        <a href="{activation_link}" 
            style="background-color: #1E90FF; color: white; padding: 10px 20px; 
                   text-decoration: none; border-radius: 5px;">
-           Konto aktivieren
+           Activate Account
         </a>
+
+        <p>If your did not create an account with us, please disregard this email</p> 
       </body>
     </html>
     """
@@ -50,9 +53,13 @@ def activate_user(uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        print("Found user:", user.email)
+    except Exception as e:
+        print("Decode/Get user failed:", e)
         return None
 
+    print("Token:", token)
+    print("Check token:", default_token_generator.check_token(user, token))
     if default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()

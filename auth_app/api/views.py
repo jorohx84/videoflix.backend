@@ -19,50 +19,60 @@ class RegisterView(APIView):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-    
-        refresh = RefreshToken.for_user(user)
+        user.is_active = False
+        user.save()
 
-        
-        enqueue(send_activation_email, user, str(refresh.access_token))
-      
-        response = Response({
-            "user": {
-                "id": user.id,
-                "email": user.email
-            },
-            "token": str(refresh.access_token)  
+        enqueue(send_activation_email, user)
+
+        return Response({
+            "message": "Registration successful. Please check your email to activate your account."
         }, status=status.HTTP_201_CREATED)
 
-      
-        response.set_cookie(
-            key='access_token',
-            value=str(refresh.access_token),
-            httponly=True,
-            samesite='Strict'
-        )
-        response.set_cookie(
-            key='refresh_token',
-            value=str(refresh),
-            httponly=True,
-            samesite='Strict'
-        )
-        return response
 
+# class ActivateAccountView(APIView):
+#     def get(self, request, uidb64, token):
+#         user = activate_user(uidb64, token)
+#         if user:
+#             refresh = RefreshToken.for_user(user)
+#             response = Response({
+#                 "message": "Account successfully activated.",
+#                 "access": str(refresh.access_token),
+#                 "refresh": str(refresh)
+#             }, status=status.HTTP_200_OK)
 
+#             response.set_cookie(
+#                 key='access_token',
+#                 value=str(refresh.access_token),
+#                 httponly=True,
+#                 samesite='Strict'
+#             )
+#             response.set_cookie(
+#                 key='refresh_token',
+#                 value=str(refresh),
+#                 httponly=True,
+#                 samesite='Strict'
+#             )
+#             return response
 
+#         return Response({"message": "Activation failed."}, status=status.HTTP_400_BAD_REQUEST)
+from django.shortcuts import redirect
+from rest_framework.views import APIView
 
 class ActivateAccountView(APIView):
+    """
+    Aktiviert den Benutzer über den Token-Link
+    und leitet ihn anschließend auf die Login-Seite weiter.
+    """
     def get(self, request, uidb64, token):
         user = activate_user(uidb64, token)
         if user:
-            return Response(
-                {"message": "Account successfully activated."},
-                status=status.HTTP_200_OK
-            )
-        return Response(
-            {"message": "Activation failed."},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+            # Erfolgreich aktiviert → auf Login-Seite weiterleiten
+            return redirect("http://127.0.0.1:5500/pages/auth/login.html?activated=true")
+        else:
+            # Aktivierung fehlgeschlagen → Fehlermeldungsseite
+            return redirect("http://127.0.0.1:5500/pages/auth/activation-failed.html")
+        
+
 
 
 class LoginView(APIView):
