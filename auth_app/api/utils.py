@@ -48,14 +48,14 @@ def send_activation_email(user):
     from_email = settings.DEFAULT_FROM_EMAIL
     to = [user.email]
 
-    # UID und Token für Aktivierungslink
+   
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     activation_link = f"http://localhost:8000{reverse('activate', kwargs={'uidb64': uidb64, 'token': token})}"
 
     text_content = f'Please activate your account using this token: {token}'
 
-    # HTML mit CID-Bild
+ 
     html_content = f"""
     <html>
       <body style="font-family: Helvetica, Arial, sans-serif; color: #333; line-height:1.6;">
@@ -76,15 +76,15 @@ def send_activation_email(user):
     </html>
     """
 
-    # E-Mail erstellen
+
     msg = EmailMultiAlternatives(subject, text_content, from_email, to)
     msg.attach_alternative(html_content, "text/html")
 
-    # Bild aus dem Projekt einfügen (z.B. PNG statt SVG für bessere Kompatibilität)
-    logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo_icon.png')  # Pfad zum Bild
+   
+    logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo_icon.png') 
     with open(logo_path, 'rb') as f:
         img = MIMEImage(f.read())
-        img.add_header('Content-ID', '<logo_image>')  # Muss genau mit cid:logo_image im HTML übereinstimmen
+        img.add_header('Content-ID', '<logo_image>')  
         img.add_header('Content-Disposition', 'inline', filename='logo_icon.png')
         msg.attach(img)
 
@@ -115,7 +115,6 @@ def send_password_reset_email(user):
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     
-    # Link zum Frontend oder direkt zum API-Endpunkt
     reset_link = f"http://127.0.0.1:5500/pages/auth/confirm_password.html?uid={uidb64}&token={token}"
     
     subject = "Reset your Videoflix password"
