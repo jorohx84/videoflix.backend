@@ -9,9 +9,10 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from .utils import send_password_reset_email_task
-from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
-
+from django_rq import get_queue
 
 
 class RegisterView(APIView):
@@ -110,6 +111,49 @@ class LoginView(APIView):
 
         return response
 
+# class LoginView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         serializer = CustomTokenObtainSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+
+#         user = serializer.user
+
+#         refresh = RefreshToken.for_user(user)
+#         access_token = str(refresh.access_token)
+#         refresh_token = str(refresh)
+
+#         # UID Base64 kodieren
+#         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+
+#         response = Response({
+#             "detail": "Login successful",
+#             "user": {
+#                 "id": user.id,
+#                 "username": user.username,
+#             },
+#             "uid": uidb64,
+#             "access_token": access_token,
+#             "refresh_token": refresh_token
+#         }, status=status.HTTP_200_OK)
+
+#         # Cookies setzen
+#         response.set_cookie(
+#             key='access_token',
+#             value=access_token,
+#             httponly=True,
+#             samesite='Strict'
+#         )
+#         response.set_cookie(
+#             key='refresh_token',
+#             value=refresh_token,
+#             httponly=True,
+#             samesite='Strict'
+#         )
+
+#         return response
+
       
 class CookieTokenRefreshView(APIView):
     """
@@ -156,32 +200,38 @@ class CookieTokenRefreshView(APIView):
         
 
 class PasswordResetRequestView(APIView):
+    """
+    Request a password reset email.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request):
         email = request.data.get("email")
-
         if not email:
             return Response(
                 {"detail": "E-Mail is required."},
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_400_BAD_REQUEST
             )
 
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-        
+            # Sicherheitsmaßnahme: wir geben keinen Hinweis, dass der User nicht existiert
             return Response(
                 {"detail": "An email has been sent to reset your password."},
-                status=status.HTTP_200_OK,
+                status=status.HTTP_200_OK
             )
 
-   
-        send_password_reset_email_task.delay(user.id)
+        # Optional: Queue mit django-rq für asynchrone Mail
+        queue = get_queue('default')
+        queue.enqueue(send_password_reset_email_task, user.id)
+
+        # Wenn du es synchron machen willst:
+        # send_password_reset_email(user)
 
         return Response(
             {"detail": "An email has been sent to reset your password."},
-            status=status.HTTP_200_OK,
+            status=status.HTTP_200_OK
         )
     
 

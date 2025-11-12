@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'auth_app',
+    'video_app',
     'rest_framework_simplejwt.token_blacklist',
 ]
 

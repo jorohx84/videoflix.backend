@@ -8,6 +8,7 @@ WORKDIR /app
 
 COPY . .
 
+
 RUN apk update && \
     apk add --no-cache --upgrade bash && \
     apk add --no-cache postgresql-client ffmpeg && \
