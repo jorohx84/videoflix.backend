@@ -30,32 +30,6 @@ class RegisterView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
-# class ActivateAccountView(APIView):
-#     def get(self, request, uidb64, token):
-#         user = activate_user(uidb64, token)
-#         if user:
-#             refresh = RefreshToken.for_user(user)
-#             response = Response({
-#                 "message": "Account successfully activated.",
-#                 "access": str(refresh.access_token),
-#                 "refresh": str(refresh)
-#             }, status=status.HTTP_200_OK)
-
-#             response.set_cookie(
-#                 key='access_token',
-#                 value=str(refresh.access_token),
-#                 httponly=True,
-#                 samesite='Strict'
-#             )
-#             response.set_cookie(
-#                 key='refresh_token',
-#                 value=str(refresh),
-#                 httponly=True,
-#                 samesite='Strict'
-#             )
-#             return response
-
-#         return Response({"message": "Activation failed."}, status=status.HTTP_400_BAD_REQUEST)
 from django.shortcuts import redirect
 from rest_framework.views import APIView
 
@@ -111,48 +85,7 @@ class LoginView(APIView):
 
         return response
 
-# class LoginView(APIView):
-#     permission_classes = [AllowAny]
 
-#     def post(self, request):
-#         serializer = CustomTokenObtainSerializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-
-#         user = serializer.user
-
-#         refresh = RefreshToken.for_user(user)
-#         access_token = str(refresh.access_token)
-#         refresh_token = str(refresh)
-
-#         # UID Base64 kodieren
-#         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-
-#         response = Response({
-#             "detail": "Login successful",
-#             "user": {
-#                 "id": user.id,
-#                 "username": user.username,
-#             },
-#             "uid": uidb64,
-#             "access_token": access_token,
-#             "refresh_token": refresh_token
-#         }, status=status.HTTP_200_OK)
-
-#         # Cookies setzen
-#         response.set_cookie(
-#             key='access_token',
-#             value=access_token,
-#             httponly=True,
-#             samesite='Strict'
-#         )
-#         response.set_cookie(
-#             key='refresh_token',
-#             value=refresh_token,
-#             httponly=True,
-#             samesite='Strict'
-#         )
-
-#         return response
 
       
 class CookieTokenRefreshView(APIView):
