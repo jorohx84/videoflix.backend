@@ -58,15 +58,15 @@ def send_activation_email(user):
  
     html_content = f"""
     <html>
-      <body style="font-family: Helvetica, Arial, sans-serif; color: #333; line-height:1.6;">
+      <body style="width:1000px; font-family: Helvetica, Arial, sans-serif; color: #333; line-height:1.6;">
         <div style="text-align:center; margin-bottom: 20px;">
           <img src="cid:logo_image" alt="Videoflix Logo" style="width:200px;" />
         </div>
         <h2>Dear {user.email},</h2>
         <p>Thank you for registering with Videoflix. To complete your registration and verify your email address, please click the link below:</p>
-        <p style="text-align:center; margin:32px 0;">
+        <p style="text-align:start; margin:32px 0;">
           <a href="{activation_link}" 
-             style="background-color:#1E90FF; color:white; padding:12px 24px; text-decoration:none; border-radius:30px; display:inline-block;">
+             style="background-color:#1122D9; color:white; padding:12px 24px; text-decoration:none; border-radius:30px; display:inline-block;">
             Activate Account
           </a>
         </p>
@@ -81,8 +81,8 @@ def send_activation_email(user):
     msg.attach_alternative(html_content, "text/html")
 
    
-    # logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo_icon.png') 
-    logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_icon.png')
+    logo_path = os.path.join(settings.BASE_DIR, 'static/images/logo_icon.png') 
+    # logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_icon.png')
     with open(logo_path, 'rb') as f:
         img = MIMEImage(f.read())
         img.add_header('Content-ID', '<logo_image>')  
@@ -112,6 +112,47 @@ def activate_user(uidb64, token):
 
 
 
+# def send_password_reset_email(user):
+#     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+#     token = default_token_generator.make_token(user)
+    
+#     reset_link = f"http://127.0.0.1:5500/pages/auth/confirm_password.html?uid={uidb64}&token={token}"
+    
+#     subject = "Reset your Videoflix password"
+#     text_content = f"Please reset your password using the following link: {reset_link}"
+    
+#     html_content = f"""
+#     <html>
+#       <body style="font-family: Helvetica, Arial, sans-serif; color: #333;">
+ 
+#         <h2>Hello,</h2>
+#         <p>We recently recieved a request to reset your password. If you made this request, please click on the following link to reset your password:</p>
+       
+#           <a href="{reset_link}" style="background-color:#1E90FF; color:white; padding:12px 24px;
+#              text-decoration:none; border-radius:30px; display:inline-block;">
+#             Reset Password
+#           </a>
+       
+#         <p>Please note that for security reasons, this link is only valid for 24 hours</p>
+#         <p>If you did not request a password reset, please ignore this mail.</p>
+#         <p>Best regards,<br>Your Videoflix Team</p>
+#         <div style="margin-bottom: 20px;">
+#           <img src="https://yourdomain.com/static/images/logo_icon.png" 
+#                alt="Videoflix Logo" style="width:150px;" />
+#         </div>
+#       </body>
+#     </html>
+#     """
+    
+#     msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [user.email])
+#     msg.attach_alternative(html_content, "text/html")
+#     msg.send()
+
+
+
+
+
+
 def send_password_reset_email(user):
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
@@ -121,33 +162,43 @@ def send_password_reset_email(user):
     subject = "Reset your Videoflix password"
     text_content = f"Please reset your password using the following link: {reset_link}"
     
+    # HTML mit CID-Referenz
     html_content = f"""
     <html>
-      <body style="font-family: Helvetica, Arial, sans-serif; color: #333;">
- 
+      <body style="width:1000px; font-family: Helvetica, Arial, sans-serif; color: #333;">
         <h2>Hello,</h2>
-        <p>We recently recieved a request to reset your password. If you made this request, please click on the following link to reset your password:</p>
-       
-          <a href="{reset_link}" style="background-color:#1E90FF; color:white; padding:12px 24px;
+        <p>We recently received a request to reset your password. If you made this request, please click on the following link:</p>
+        <p style="text-align:start; margin:32px 0;">
+          <a href="{reset_link}" style="background-color:#1122D9; color:white; padding:12px 24px;
              text-decoration:none; border-radius:30px; display:inline-block;">
             Reset Password
           </a>
-       
+        </p>
         <p>Please note that for security reasons, this link is only valid for 24 hours</p>
         <p>If you did not request a password reset, please ignore this mail.</p>
-        <p>Best regards,<br>Your Videoflix Team</p>
-        <div style="margin-bottom: 20px;">
-          <img src="https://yourdomain.com/static/images/logo_icon.png" 
-               alt="Videoflix Logo" style="width:150px;" />
+        <p>Best regards,<br> <br>Your Videoflix Team</p>
+        <div style="text-align:start; margin-top: 20px;">
+          <img src="cid:logo_image" alt="Videoflix Logo" style="width:150px;" />
         </div>
+
+        <img src="./Designvorlage password_reset Videoflix.png" alt="">
       </body>
     </html>
     """
     
     msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [user.email])
     msg.attach_alternative(html_content, "text/html")
+    
+    # Pfad zum Logo (PNG empfohlen)
+    logo_path = os.path.join(settings.BASE_DIR, 'static', 'images', 'logo_icon.png')
+    
+    with open(logo_path, 'rb') as f:
+        img = MIMEImage(f.read(), _subtype='png')  # PNG muss hier explizit angegeben werden
+        img.add_header('Content-ID', '<logo_image>')  # muss mit cid im HTML übereinstimmen
+        img.add_header('Content-Disposition', 'inline', filename='logo_icon.png')
+        msg.attach(img)
+    
     msg.send()
-
 
 @job
 def send_password_reset_email_task(user_id):
