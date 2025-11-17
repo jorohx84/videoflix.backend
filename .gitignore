@@ -88,6 +88,8 @@ celerybeat.pid
 *.swp
 *.swo
 *~
+# Media / Videos
+videofiles/
 
 # --- Migrations (optional, wenn du sie nicht mitpushen willst) ---
 # auth_app/migrations/
