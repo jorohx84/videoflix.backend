@@ -9,12 +9,16 @@ class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
         fields = ('id', 'title', 'description', 'category', 'created_at', 'thumbnail_url')
+    # usrpüngliche version
 
     # def get_thumbnail_url(self, obj):
     #     thumbnail_path = os.path.join(settings.MEDIA_ROOT, "thumbnails", f"{obj.id}.jpg")
     #     if os.path.exists(thumbnail_path):
     #         return settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"
     #     return None
+
+
+
 
     def get_thumbnail_url(self, obj):
         thumbnail_path = os.path.join(settings.MEDIA_ROOT, "thumbnails", f"{obj.id}.jpg")
@@ -27,3 +31,14 @@ class VideoSerializer(serializers.ModelSerializer):
                 # Fallback: nur relative URL
                 return settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"
         return None
+
+
+
+    # def get_thumbnail_url(self, obj):
+    #     thumbnail_path = os.path.join(settings.MEDIA_ROOT, "thumbnails", f"{obj.id}.jpg")
+    #     if os.path.exists(thumbnail_path):
+    #         request = getattr(self, 'context', {}).get('request')
+    #         if request:
+    #             return request.build_absolute_uri(settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg")
+    #         return settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"
+    #     return None

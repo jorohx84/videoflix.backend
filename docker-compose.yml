@@ -1,5 +1,65 @@
-services:
+# services:
 
+#   db:
+#     image: postgres:latest
+#     container_name: videoflix_database
+#     environment:
+#       POSTGRES_DB: ${DB_NAME}
+#       POSTGRES_USER: ${DB_USER}
+#       POSTGRES_PASSWORD: ${DB_PASSWORD}
+#     volumes:
+#       - postgres_data:/var/lib/postgresql
+
+#   redis:
+#     image: redis:latest
+#     container_name: videoflix_redis
+#     volumes:
+#       - redis_data:/data
+
+#   web:
+#     build:
+#       context: .
+#       dockerfile: backend.Dockerfile
+#     env_file: .env
+#     container_name: videoflix_backend
+
+#     volumes:
+#       - .:/app
+#       - videoflix_media:/app/media
+#       - videoflix_static:/app/static
+#     ports:
+#       - "8000:8000"
+#     environment:
+#       - PYTHONUNBUFFERED=1
+#     depends_on:
+#       - db
+#       - redis
+
+
+#   # worker:
+#   #   build:
+#   #     context: .
+#   #     dockerfile: backend.Dockerfile
+#   #   env_file: .env
+#   #   container_name: videoflix_worker
+#   #   depends_on:
+#   #     - redis
+#   #     - web
+#   #   command: rq worker default
+#   #   restart: always
+
+
+
+# volumes:
+#   postgres_data:
+#   redis_data:
+#   videoflix_media:
+#   videoflix_static:
+
+
+version: "3.9"
+
+services:
   db:
     image: postgres:latest
     container_name: videoflix_database
@@ -22,11 +82,11 @@ services:
       dockerfile: backend.Dockerfile
     env_file: .env
     container_name: videoflix_backend
-
     volumes:
       - .:/app
       - videoflix_media:/app/media
       - videoflix_static:/app/static
+      - ./videofiles:/app/videofiles
     ports:
       - "8000:8000"
     environment:
@@ -34,7 +94,6 @@ services:
     depends_on:
       - db
       - redis
-
 
   worker:
     build:
@@ -47,8 +106,11 @@ services:
       - web
     command: rq worker default
     restart: always
-
-
+    volumes:
+      - .:/app
+      - videoflix_media:/app/media
+      - videoflix_static:/app/static
+      - ./videofiles:/app/videofiles
 
 volumes:
   postgres_data:
