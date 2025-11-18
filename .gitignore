@@ -27,7 +27,7 @@ local_settings.py
 .env
 .env.*
 *.env
-!example.env  # Falls du eine Beispiel-Env teilen möchtest
+!.env.template
 
 # --- Docker ---
 *.pid
@@ -91,7 +91,3 @@ celerybeat.pid
 # Media / Videos
 videofiles/
 
-# --- Migrations (optional, wenn du sie nicht mitpushen willst) ---
-# auth_app/migrations/
-# **/migrations/*.py
-# !**/migrations/__init__.py
