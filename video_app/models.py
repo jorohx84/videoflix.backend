@@ -1,10 +1,21 @@
-
-
 from django.db import models
-from django_rq import enqueue
-from .api.utils import generate_thumbnail, generate_hls_streams
+
 
 class Video(models.Model):
+    """
+    Represents a video in the Videoflix platform.
+
+    This model stores metadata about a video, including title, description,
+    category, upload date, and file path. It is used to manage video content,
+    generate HLS streams, and create thumbnails for the frontend.
+
+    Important fields:
+        - title: The title of the video.
+        - description: Brief description of the video content.
+        - category: The category or genre of the video.
+        - file_path: Path to the uploaded video file.
+        - created_at: Timestamp when the video was uploaded.
+    """
     title = models.CharField(max_length=255)
     description = models.TextField()
     category = models.CharField(max_length=100)

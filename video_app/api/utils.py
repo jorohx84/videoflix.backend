@@ -3,6 +3,26 @@ import subprocess
 from django.conf import settings
 
 def generate_thumbnail(video_path, video_id):
+    """
+    Generates a thumbnail image for a video file and returns its URL.
+
+    This function checks if a thumbnail already exists for the given video ID.
+    If not, it uses ffmpeg to capture a single frame at 1 second into the video
+    and saves it as a JPEG file in the `MEDIA_ROOT/thumbnails` directory. The
+    function returns the relative URL to access the thumbnail.
+
+    Args:
+        video_path (str): The file system path to the video file.
+        video_id (int or str): The unique identifier for the video, used to
+                               name the thumbnail file.
+
+    Returns:
+        str: The URL of the generated or existing thumbnail image.
+
+    Notes:
+        - Requires `ffmpeg` to be installed and accessible in the system path.
+        - Prints an error message if thumbnail generation fails.
+    """
     thumbnail_dir = os.path.join(settings.MEDIA_ROOT, "thumbnails")
     os.makedirs(thumbnail_dir, exist_ok=True)
     thumbnail_path = os.path.join(thumbnail_dir, f"{video_id}.jpg")
@@ -22,7 +42,28 @@ def generate_thumbnail(video_path, video_id):
     return settings.MEDIA_URL + f"thumbnails/{video_id}.jpg"
 
 
+
 def generate_hls_streams(video_path, video_id):
+    """
+    Generates HLS (HTTP Live Streaming) video streams at multiple resolutions.
+
+    This function creates adaptive bitrate HLS streams (480p, 720p, 1080p)
+    from the input video using ffmpeg. Each resolution is stored in a
+    separate directory under `MEDIA_ROOT/hls/<video_id>/<resolution>/`, with
+    segment files and an `index.m3u8` playlist. Existing playlists are not
+    regenerated.
+
+    Args:
+        video_path (str): The file system path to the source video file.
+        video_id (int or str): The unique identifier for the video, used to
+                               organize HLS output directories.
+
+    Notes:
+        - Requires `ffmpeg` to be installed and accessible in the system path.
+        - Prints an error message if stream generation fails for any resolution.
+        - Segments are encoded with H.264 for video and AAC for audio, with
+          VOD-compatible HLS playlists.
+    """
     resolutions = {
         "480p": "854x480",
         "720p": "1280x720",

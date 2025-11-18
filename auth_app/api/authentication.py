@@ -2,12 +2,19 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import exceptions
 
 class CookieJWTAuthentication(JWTAuthentication):
+    """
+    Custom authentication class that retrieves the JWT access token from
+    an HttpOnly cookie instead of the Authorization header.
+
+    Extends:
+        JWTAuthentication: SimpleJWT's default authentication class.
+    """
     def authenticate(self, request):
-        # Token aus Cookie lesen
+      
         access_token = request.COOKIES.get("access_token")
 
         if not access_token:
-            return None  # Kein Token → DRF fährt fort zu anderen Auth-Methoden
+            return None  
 
         validated_token = self.get_validated_token(access_token)
 
