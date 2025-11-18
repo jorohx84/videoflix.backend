@@ -97,6 +97,8 @@ EMAIL_HOST_PASSWORD=your_email_password
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL=no-reply@videoflix.com
 
+FRONTEND_BASE_URL=your_frontend_url
+
 ```
 ## Docker Setup
 
