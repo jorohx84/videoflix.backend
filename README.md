@@ -38,6 +38,37 @@ git clone https://github.com/jorohx84/videoflix.backend.git
 
 cd videoflix
 ```
+
+## Installation
+
+### 1. Create a virtual environment
+```bash
+python -m venv venv
+```
+### 2. Start Enviroment
+ 
+Linux/MacOS:
+
+```bash
+source venv/bin/activate 
+```
+
+Windows:
+
+```bash
+venv\Scripts\activate  
+```
+
+### 3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+
+```
+
+
+
+
 ## Environment Variables
 
 The project uses environment variables for configuration. Copy the example .env.example to .env:
@@ -67,5 +98,42 @@ EMAIL_HOST_PASSWORD=your_email_password
 EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL=no-reply@videoflix.com
 
+```
+## Docker Setup
+
+The project uses Docker for all services, including:
+
+- **PostgreSQL** database
+- **Redis** for background tasks
+- **Django** application server
+
+If you don't have Docker installed, download and install **Docker Desktop** from [here](https://www.docker.com/products/docker-desktop/).
+
+> **Note:** Make sure Docker Desktop is running before you try to build or start containers, otherwise the containers cannot be created.
+
+### Build and start the containers:
+
+```bash
+docker compose up --build
+
+```
+
+### Running the Project
+Apply migrations
+```bash
+docker compose exec web python manage.py migrate
+
+```
+
+Create a superuser
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+Start background worker (RQ)
+
+```bash
+docker compose exec web python manage.py rqworker
 ```
 
