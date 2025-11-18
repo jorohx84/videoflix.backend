@@ -43,7 +43,7 @@ cd videoflix
 
 ### 1. Create a virtual environment
 ```bash
-python -m venv venv
+python -m venv env
 ```
 ### 2. Start Enviroment
  
