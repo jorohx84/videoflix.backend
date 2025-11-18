@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import redirect
 from django.utils.http import urlsafe_base64_decode
+from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -66,12 +67,13 @@ class ActivateAccountView(APIView):
     def get(self, request, uidb64, token):
         user = activate_user(uidb64, token)
         if user:
-            # Erfolgreich aktiviert → auf Login-Seite weiterleiten
+        
             return redirect("http://127.0.0.1:5500/pages/auth/login.html?activated=true")
         else:
-            # Aktivierung fehlgeschlagen → Fehlermeldungsseite
+           
             return redirect("http://127.0.0.1:5500/pages/auth/activation-failed.html")
         
+
 
 
 
