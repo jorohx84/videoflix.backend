@@ -34,6 +34,38 @@ Before setting up the project, make sure the following are installed:
 Clone the GitHub repository to your local machine:
 
 ```bash
-git clone https://github.com/<your-username>/videoflix.git
+git clone https://github.com/jorohx84/videoflix.backend.git
+
 cd videoflix
 ```
+## Environment Variables
+
+The project uses environment variables for configuration. Copy the example .env.example to .env:
+
+```bash
+cp .env.example .env
+
+```
+
+Edit .env and set your configuration values:
+
+```bash
+
+SECRET_KEY=your_django_secret_key
+DB_NAME=videoflix_db
+DB_USER=videoflix_user
+DB_PASSWORD=supersecretpassword
+DB_HOST=db
+DB_PORT=5432
+
+REDIS_LOCATION=redis://redis:6379/1
+
+EMAIL_HOST=smtp.example.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=your_email@example.com
+EMAIL_HOST_PASSWORD=your_email_password
+EMAIL_USE_TLS=True
+DEFAULT_FROM_EMAIL=no-reply@videoflix.com
+
+```
+
