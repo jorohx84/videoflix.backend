@@ -82,8 +82,8 @@ Edit .env and set your configuration values:
 
 ```bash
 
-DB_NAME=videoflix_db
-DB_USER=videoflix_user
+DB_NAME=your_database_name
+DB_USER=your_database_user
 DB_PASSWORD=supersecretpassword
 DB_HOST=db
 DB_PORT=5432
