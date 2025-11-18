@@ -7,9 +7,11 @@ from rest_framework import status
 from ..models import Video
 from .serializers import VideoSerializer
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+
 
 class VideoListView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
@@ -24,7 +26,7 @@ class VideoListView(APIView):
             )
 
 class VideoHLSView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, movie_id, resolution):
         video = get_object_or_404(Video, id=movie_id)
@@ -43,7 +45,7 @@ class VideoHLSView(APIView):
         return HttpResponse(manifest_content, content_type='application/vnd.apple.mpegurl')
 
 class VideoSegmentView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, movie_id, resolution, segment):
         video = get_object_or_404(Video, id=movie_id)

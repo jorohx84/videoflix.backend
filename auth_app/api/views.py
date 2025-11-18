@@ -65,7 +65,7 @@ class LoginView(APIView):
             "detail": "Login successful",
             "user":{
                 "id": user.id,
-                "user": user.username,
+                "username": user.username,
             }
         }, status=status.HTTP_200_OK)
 
@@ -74,13 +74,13 @@ class LoginView(APIView):
             key='access_token',
             value=access_token,
             httponly=True,
-            samesite='Strict'
+            samesite='Lax'
         )
         response.set_cookie(
             key='refresh_token',
             value=str(refresh),
             httponly=True,
-            samesite='Strict'
+            samesite='Lax'
         )
 
         return response
