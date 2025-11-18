@@ -10,3 +10,5 @@ def start_video_processing(sender, instance, created, **kwargs):
       
         enqueue(generate_hls_streams, instance.file_path.path, instance.id)
         enqueue(generate_thumbnail, instance.file_path.path, instance.id)
+
+
