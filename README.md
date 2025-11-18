@@ -82,7 +82,6 @@ Edit .env and set your configuration values:
 
 ```bash
 
-SECRET_KEY=your_django_secret_key
 DB_NAME=videoflix_db
 DB_USER=videoflix_user
 DB_PASSWORD=supersecretpassword
