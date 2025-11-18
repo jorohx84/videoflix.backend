@@ -32,7 +32,9 @@ def send_activation_email(user):
    
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
-    activation_link = f"http://localhost:8000{reverse('activate', kwargs={'uidb64': uidb64, 'token': token})}"
+
+    frontend_base = settings.FRONTEND_BASE_URL
+    activation_link = f"{frontend_base}pages/auth/activate.html?uid={uidb64}&token={token}"
 
     text_content = f'Please activate your account using this token: {token}'
 
@@ -132,13 +134,12 @@ def send_password_reset_email(user):
     """
     uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
-    
-    reset_link = f"http://127.0.0.1:5500/pages/auth/confirm_password.html?uid={uidb64}&token={token}"
-    
+    frontend_base = settings.FRONTEND_BASE_URL 
+    reset_link = f"{frontend_base}pages/auth/confirm_password.html?uid={uidb64}&token={token}"
     subject = "Reset your Videoflix password"
     text_content = f"Please reset your password using the following link: {reset_link}"
     
-    # HTML mit CID-Referenz
+    
     html_content = f"""
     <html>
       <body style="width:1000px; font-family: Helvetica, Arial, sans-serif; color: #333;">
@@ -165,12 +166,12 @@ def send_password_reset_email(user):
     msg = EmailMultiAlternatives(subject, text_content, settings.DEFAULT_FROM_EMAIL, [user.email])
     msg.attach_alternative(html_content, "text/html")
     
-    # Pfad zum Logo (PNG empfohlen)
+
     logo_path = os.path.join(settings.BASE_DIR, 'templates', 'images', 'logo_icon.png')
     
     with open(logo_path, 'rb') as f:
-        img = MIMEImage(f.read(), _subtype='png')  # PNG muss hier explizit angegeben werden
-        img.add_header('Content-ID', '<logo_image>')  # muss mit cid im HTML übereinstimmen
+        img = MIMEImage(f.read(), _subtype='png')  
+        img.add_header('Content-ID', '<logo_image>')  
         img.add_header('Content-Disposition', 'inline', filename='logo_icon.png')
         msg.attach(img)
     

@@ -45,17 +45,14 @@ class RegisterView(APIView):
 
 
 
-
-
+        
 class ActivateAccountView(APIView):
     """
     API view to handle user account activation via email link.
 
     This view accepts a GET request with a base64-encoded user ID (`uidb64`)
     and an activation token. It attempts to activate the corresponding user
-    using the `activate_user` helper function. Depending on the result, the
-    user is redirected to either the login page (on success) or an 
-    activation-failed page.
+    using the `activate_user` helper function. 
 
     Methods:
         get(request, uidb64, token):
@@ -64,16 +61,13 @@ class ActivateAccountView(APIView):
     """
     permission_classes = [AllowAny]
     authentication_classes = []
+
     def get(self, request, uidb64, token):
         user = activate_user(uidb64, token)
         if user:
-        
-            return redirect("http://127.0.0.1:5500/pages/auth/login.html?activated=true")
+            return Response({"status": "activated"}, status=200)
         else:
-           
-            return redirect("http://127.0.0.1:5500/pages/auth/activation-failed.html")
-        
-
+            return Response({"status": "invalid"}, status=400)
 
 
 
