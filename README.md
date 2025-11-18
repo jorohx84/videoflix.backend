@@ -74,7 +74,7 @@ pip install -r requirements.txt
 The project uses environment variables for configuration. Copy the example .env.example to .env:
 
 ```bash
-cp .env.example .env
+cp .env.template .env
 
 ```
 
