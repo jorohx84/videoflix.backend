@@ -34,6 +34,3 @@ class VideoSerializer(serializers.ModelSerializer):
                 return settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"
         return None
 
-
-
-  

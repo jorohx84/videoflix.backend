@@ -41,11 +41,11 @@ cd videoflix
 
 ## Installation
 
-### 1. Create a virtual environment
+### 1. Create a virtual environment (optional, if you want to start without docker)
 ```bash
 python -m venv env
 ```
-### 2. Start Enviroment
+### 2. Start Enviroment (optional, if you want to start without docker)
  
 Linux/MacOS:
 
