@@ -50,7 +50,7 @@ python -m venv env
 Linux/MacOS:
 
 ```bash
-source venv/bin/activate 
+source env/bin/activate 
 ```
 
 Windows:
