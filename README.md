@@ -130,9 +130,5 @@ Create a superuser
 docker compose exec web python manage.py createsuperuser
 ```
 
-Start background worker (RQ)
 
-```bash
-docker compose exec web python manage.py rqworker
-```
 
