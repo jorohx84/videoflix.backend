@@ -1,5 +1,5 @@
 from django.db import models
-
+import os
 
 class Video(models.Model):
     """
@@ -15,17 +15,19 @@ class Video(models.Model):
         - category: The category or genre of the video.
         - file_path: Path to the uploaded video file.
         - created_at: Timestamp when the video was uploaded.
+        - thumbnail: Imagefield du upload a video screenshot
     """
     title = models.CharField(max_length=255)
     description = models.TextField()
     category = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     file_path = models.FileField(upload_to='videos/')
-  
+
+    # Manuelles Thumbnail speichern im gleichen Ordner wie automatisch generierte
+    def thumbnail_upload_path(instance, filename):
+        return os.path.join("thumbnails", filename)
+
+    thumbnail = models.ImageField(upload_to=thumbnail_upload_path, blank=True, null=True)
+
     def __str__(self):
         return self.title
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-     
