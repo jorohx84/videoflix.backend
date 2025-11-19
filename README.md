@@ -41,7 +41,7 @@ cd videoflix
 
 ## Installation
 
-### 📥 Installing ffmpeg
+### Install ffmpeg
 
 
 ### Install dependencies:
