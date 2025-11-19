@@ -42,8 +42,9 @@ cd videoflix
 ## Installation
 
 ### Install ffmpeg
+ffmpeg is required for video features like generating thumbnails or HLS streams.
 
-Windows:
+### Windows:
 1. Go to the official ffmpeg website: https://ffmpeg.org/download.html
 
 2. Click on Windows builds by gyan.dev or BtbN (recommended).
@@ -58,14 +59,43 @@ Windows:
 
     - Edit the Path variable and add C:\ffmpeg\bin
 
+6. Verify installation:
 
+```bash
+ffmpeg -version
 
+```
+
+### MacOS:
+
+Option A: Homebrew (recommended)
+```bash
+brew install ffmpeg
+```
 
 ### Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 
+```
+Option B: Manual installation
+1. Download the latest version from https://ffmpeg.org/download.html
+
+2. Extract it and move ffmpeg to /usr/local/bin/
+
+3. Verify installation:
+```bash
+ffmpeg -version
+
+```
+
+### Test the Installation
+
+After installing, you can test if it works:
+
+```bash
+ffmpeg -i input.mp4 -ss 00:00:01 -vframes 1 thumbnail.jpg
 ```
 
 ## Environment Variables
