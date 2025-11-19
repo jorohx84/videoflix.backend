@@ -43,6 +43,23 @@ cd videoflix
 
 ### Install ffmpeg
 
+Windows:
+1. Go to the official ffmpeg website: https://ffmpeg.org/download.html
+
+2. Click on Windows builds by gyan.dev or BtbN (recommended).
+
+3. Download the Release version (Static build).
+
+4. Extract the ZIP file, e.g., to C:\ffmpeg.
+
+5. Add the bin folder to your PATH:
+
+    - Open Control Panel → System → Advanced system settings → Environment Variables
+
+    - Edit the Path variable and add C:\ffmpeg\bin
+
+
+
 
 ### Install dependencies:
 
