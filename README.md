@@ -41,33 +41,15 @@ cd videoflix
 
 ## Installation
 
-### 1. Create a virtual environment (optional, if you want to start without docker)
-```bash
-python -m venv env
-```
-### 2. Start Enviroment (optional, if you want to start without docker)
- 
-Linux/MacOS:
+### 📥 Installing ffmpeg
 
-```bash
-source env/bin/activate 
-```
 
-Windows:
-
-```bash
-venv\Scripts\activate  
-```
-
-### 3. Install dependencies:
+### Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 
 ```
-
-
-
 
 ## Environment Variables
 
