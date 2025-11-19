@@ -33,17 +33,17 @@ class VideoSerializer(serializers.ModelSerializer):
     def get_thumbnail_url(self, obj):
         request = self.context.get('request')
 
-        # 1️⃣ Manuelles Thumbnail hat Priorität
+     
         if obj.thumbnail and obj.thumbnail.name:
             url_path = obj.thumbnail.url
         else:
-            # 2️⃣ Automatisch generiertes Thumbnail
+        
             thumbnail_path = os.path.join(settings.MEDIA_ROOT, "thumbnails", f"{obj.id}.jpg")
             if not os.path.exists(thumbnail_path):
                 return None
-            url_path = settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"  # <-- MEDIA_URL davor
+            url_path = settings.MEDIA_URL + f"thumbnails/{obj.id}.jpg"  
 
-        # Absolute URL
+       
         if request:
             return request.build_absolute_uri(url_path)
         return url_path
