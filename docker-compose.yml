@@ -36,22 +36,7 @@ services:
       - db
       - redis
 
-  worker:
-    build:
-      context: .
-      dockerfile: backend.Dockerfile
-    env_file: .env
-    container_name: videoflix_worker
-    depends_on:
-      - redis
-      - web
-    command: rq worker default
-    restart: always
-    volumes:
-      - .:/app
-      - videoflix_media:/app/media
-      - videoflix_static:/app/static
-      - ./videofiles:/app/videofiles
+
 
 volumes:
   postgres_data:
