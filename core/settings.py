@@ -36,7 +36,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5500",
 ]
 
-ALLOWED_HOSTS = []
+
 # AUTH_USER_MODEL = 'auth_app.CustomUser'
 
 # Application definition
